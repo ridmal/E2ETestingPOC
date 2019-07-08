@@ -1,0 +1,353 @@
+<html><head>
+        <title>Home</title>
+        <link rel="shortcut icon" type="image/ico" href="/openmrs/images/openmrs-favicon.ico">
+        <link rel="icon" type="image/png\" href="/openmrs/images/openmrs-favicon.png">
+        
+        <script type="text/javascript" src="/openmrs/ms/uiframework/resource/uicommons/scripts/jquery-1.12.4.min.js?cache=1561890208702"></script>
+<script type="text/javascript" src="/openmrs/ms/uiframework/resource/uicommons/scripts/jquery-ui-1.9.2.custom.min.js?cache=1561890208702"></script>
+<script type="text/javascript" src="/openmrs/ms/uiframework/resource/uicommons/scripts/underscore-min.js?cache=1561890208702"></script>
+<script type="text/javascript" src="/openmrs/ms/uiframework/resource/uicommons/scripts/knockout-2.2.1.js?cache=1561890208702"></script>
+<script type="text/javascript" src="/openmrs/ms/uiframework/resource/uicommons/scripts/emr.js?cache=1561890208702"></script>
+<script type="text/javascript" src="/openmrs/ms/uiframework/resource/uicommons/scripts/jquery.toastmessage.js?cache=1561890208702"></script>
+<script type="text/javascript" src="/openmrs/ms/uiframework/resource/uicommons/scripts/jquery.simplemodal.1.4.4.min.js?cache=1561890208702"></script>
+<link rel="stylesheet" href="/openmrs/ms/uiframework/resource/uicommons/styles/styleguide/jquery-ui-1.9.2.custom.min.css?cache=1561890208702" type="text/css">
+<link rel="stylesheet" href="/openmrs/ms/uiframework/resource/uicommons/styles/styleguide/jquery.toastmessage.css?cache=1561890208702" type="text/css">
+<link rel="stylesheet" href="/openmrs/ms/uiframework/resource/appui/styles/header.css?cache=1561890208702" type="text/css">
+<link rel="stylesheet" href="/openmrs/ms/uiframework/resource/referenceapplication/styles/referenceapplication.css?cache=1561890208702" type="text/css">
+
+    </head>
+    <body>
+        <script type="text/javascript">
+            var OPENMRS_CONTEXT_PATH = 'openmrs';
+            var openmrsContextPath = '/' + OPENMRS_CONTEXT_PATH;
+            window.sessionContext = window.sessionContext || {
+                locale: "en_GB"
+            };
+            window.translations = window.translations || {};
+            var openmrs = {
+                server: {
+                    timezone: "+0530",
+                    timezoneOffset: -330
+                }
+            }
+        </script>
+
+
+<script type="text/javascript">
+
+    var sessionLocationModel = {
+        id: ko.observable(),
+        text: ko.observable()
+    };
+
+    jq(function () {
+
+        ko.applyBindings(sessionLocationModel, jq('.change-location').get(0));
+        sessionLocationModel.id(11);
+        sessionLocationModel.text("Acme Clinic");
+
+        // we only want to activate the functionality to change location if there are actually multiple login locations
+        
+
+            jq(".change-location a").click(function () {
+                jq('#session-location').show();
+                jq(this).addClass('focus');
+                jq(".change-location a i:nth-child(3)").removeClass("icon-caret-down");
+                jq(".change-location a i:nth-child(3)").addClass("icon-caret-up");
+            });
+
+            jq('#session-location').mouseleave(function () {
+                jq('#session-location').hide();
+                jq(".change-location a").removeClass('focus');
+                jq(".change-location a i:nth-child(3)").addClass("icon-caret-down");
+                jq(".change-location a i:nth-child(3)").removeClass("icon-caret-up");
+            });
+
+            jq("#session-location ul.select li").click(function (event) {
+                var element = jq(event.target);
+                var locationId = element.attr("locationId");
+                var locationUuid = element.attr("locationUuid");
+                var locationName = element.attr("locationName");
+
+                var data = { locationId: locationId };
+
+                jq("#spinner").show();
+
+                jq.post(emr.fragmentActionLink("appui", "session", "setLocation", data), function (data) {
+                    sessionLocationModel.id(locationId);
+                    sessionLocationModel.text(locationName);
+                    jq('#selected-location').attr("location-uuid", locationUuid);
+                    jq('#session-location li').removeClass('selected');
+                    element.addClass('selected');
+                    jq("#spinner").hide();
+                    jq(document).trigger("sessionLocationChanged");
+                })
+
+                jq('#session-location').hide();
+                jq(".change-location a").removeClass('focus');
+                jq(".change-location a i:nth-child(3)").addClass("icon-caret-down");
+                jq(".change-location a i:nth-child(3)").removeClass("icon-caret-up");
+            });
+
+            
+            jq('.identifier').hover(
+                function(){
+                    jq('.appui-toggle').show();
+                    jq('.appui-icon-caret-down').hide();
+                },
+                 function(){
+                    jq('.appui-toggle').hide();
+                    jq('.appui-icon-caret-down').show();
+                 }
+            );
+            jq('.identifier').css('cursor', 'pointer');
+            
+        
+    });
+
+</script>
+
+<header>
+    <div class="logo">
+        <a href="/openmrs/referenceapplication/home.page">
+            <img src="/openmrs/ms/uiframework/resource/uicommons/images/logo/openmrs-with-title-small.png">
+        </a>
+    </div>
+    
+    <ul class="user-options">
+        <li class="identifier" style="cursor: pointer;">
+            <i class="icon-user small"></i>
+            admin
+            
+            <i class="icon-caret-down appui-icon-caret-down link"></i><i class="icon-caret-up link appui-toggle" style="display: none;"></i>
+                <ul id="user-account-menu" class="appui-toggle">
+                    
+                    <li>
+                        <a id="" href="/openmrs/adminui/myaccount/myAccount.page">
+                            My Account
+                        </a>
+                    </li>
+                    
+                </ul>
+            
+        </li>
+        <li class="change-location">
+            <a href="javascript:void(0);">
+                <i class="icon-map-marker small"></i>
+                <span id="selected-location" data-bind="text: text" location-uuid="a03e395c-b881-49b7-b6fc-983f6bddc7fc">Acme Clinic</span>
+                
+                    <i class="icon-caret-down link"></i>
+                
+            </a>
+        </li>
+        <li class="logout">
+            <a href="/openmrs/appui/header/logout.action?successUrl=openmrs">
+                Logout
+                <i class="icon-signout small"></i>
+            </a>
+        </li>
+    </ul>
+
+    <div id="session-location">
+        <div id="spinner" style="position:absolute; display:none">
+            <img src="/openmrs/ms/uiframework/resource/uicommons/images/spinner.gif">
+        </div>
+        <ul class="select">
+            
+            <li class="selected" locationuuid="a03e395c-b881-49b7-b6fc-983f6bddc7fc" locationid="11" locationname="Acme Clinic">Acme Clinic</li>
+            
+            <li class="" locationuuid="b1a8b05e-3542-4037-bbd3-998ee9c40574" locationid="6" locationname="Inpatient Ward">Inpatient Ward</li>
+            
+            <li class="" locationuuid="2131aff8-2e2a-480a-b7ab-4ac53250262b" locationid="4" locationname="Isolation Ward">Isolation Ward</li>
+            
+            <li class="" locationuuid="7fdfa2cb-bc95-405a-88c6-32b7673c0453" locationid="3" locationname="Laboratory">Laboratory</li>
+            
+            <li class="" locationuuid="58c57d25-8d39-41ab-8422-108a0c277d98" locationid="7" locationname="Outpatient Clinic">Outpatient Clinic</li>
+            
+            <li class="" locationuuid="7f65d926-57d6-4402-ae10-a5b3bcbf7986" locationid="2" locationname="Pharmacy">Pharmacy</li>
+            
+            <li class="" locationuuid="6351fcf4-e311-4a19-90f9-35667d99a8af" locationid="5" locationname="Registration Desk">Registration Desk</li>
+            
+            <li class="" locationuuid="d8da9a21-0f95-4643-9ea2-b2705160b9e3" locationid="9" locationname="The Lake Clinic-Cambodia">The Lake Clinic-Cambodia</li>
+            
+        </ul>
+    </div>
+    
+</header>
+
+<ul id="breadcrumbs"></ul>
+
+<div id="body-wrapper">
+
+    
+
+<script type="text/javascript">
+     
+    
+</script>
+
+<div id="error-message" class="note-container">
+    <div class="note error" style="display: none">
+        <div class="text">
+            <i class="icon-remove medium"></i>
+            
+        </div>
+        <div class="close-icon"><i class="icon-remove"></i></div>
+    </div>
+</div>
+
+<div id="info-message" class="note-container">
+    <div class="note success" style="display: none">
+        <div class="text">
+            <i class="icon-ok medium"></i>
+            
+        </div>
+        <div class="close-icon"><i class="icon-remove"></i></div>
+    </div>
+</div>
+
+    <div id="content" class="container">
+        
+
+<div id="home-container">
+
+    
+
+    <div class="note-container">
+        
+            <div class="note success">
+                <div class="text">
+                    
+                        <i class="icon-info-sign medium"></i>
+                    
+                    <p>Please tell us about your installation for the OpenMRS Atlas</p>
+                    
+                        <p>
+                            
+                                <a href="/openmrs/atlas/map.page">Configure Atlas</a>
+                            
+                        </p>
+                    
+                </div>
+            </div>
+        
+    </div>
+
+
+    
+        <h4>
+            Logged in as Super User () at Acme Clinic.
+        </h4>
+    
+
+    <div id="apps">
+        
+            <a id="coreapps-activeVisitsHomepageLink-coreapps-activeVisitsHomepageLink-extension" href="/openmrs/coreapps/findpatient/findPatient.page?app=coreapps.findPatient" class="button app big">
+                
+                   <i class="icon-search"></i>
+                
+                Find Patient Record
+            </a>
+        
+            <a id="org-openmrs-module-coreapps-activeVisitsHomepageLink-org-openmrs-module-coreapps-activeVisitsHomepageLink-extension" href="/openmrs/coreapps/activeVisits.page?app=coreapps.activeVisits" class="button app big">
+                
+                   <i class="icon-calendar"></i>
+                
+                Active Visits
+            </a>
+        
+            <a id="appointmentschedulingui-homeAppLink-appointmentschedulingui-homeAppLink-extension" href="/openmrs//appointmentschedulingui/home.page" class="button app big">
+                
+                   <i class="icon-calendar"></i>
+                
+                Appointment Scheduling
+            </a>
+        
+            <a id="referenceapplication-registrationapp-registerPatient-homepageLink-referenceapplication-registrationapp-registerPatient-homepageLink-extension" href="/openmrs/registrationapp/registerPatient.page?appId=referenceapplication.registrationapp.registerPatient" class="button app big">
+                
+                   <i class="icon-user"></i>
+                
+                Register a patient
+            </a>
+        
+            <a id="referenceapplication-vitals-referenceapplication-vitals-extension" href="/openmrs/coreapps/findpatient/findPatient.page?app=referenceapplication.vitals" class="button app big">
+                
+                   <i class="icon-vitals"></i>
+                
+                Capture Vitals
+            </a>
+        
+            <a id="reportingui-reports-homepagelink-reportingui-reports-homepagelink-extension" href="/openmrs/reportingui/reportsapp/home.page" class="button app big">
+                
+                   <i class="icon-list-alt"></i>
+                
+                Reports
+            </a>
+        
+            <a id="coreapps-datamanagement-homepageLink-coreapps-datamanagement-homepageLink-extension" href="/openmrs/coreapps/datamanagement/dataManagement.page" class="button app big">
+                
+                   <i class="icon-hdd"></i>
+                
+                Data Management
+            </a>
+        
+            <a id="org-openmrs-module-adminui-configuremetadata-homepageLink-org-openmrs-module-adminui-configuremetadata-homepageLink-extension" href="/openmrs/adminui/metadata/configureMetadata.page" class="button app big">
+                
+                   <i class="icon-tasks"></i>
+                
+                Configure Metadata
+            </a>
+        
+            <a id="coreapps-systemadministration-homepageLink-coreapps-systemadministration-homepageLink-extension" href="/openmrs/coreapps/systemadministration/systemAdministration.page" class="button app big">
+                
+                   <i class="icon-cogs"></i>
+                
+                System Administration
+            </a>
+        
+    </div>
+
+</div>
+
+    </div>
+
+</div>
+
+<script id="breadcrumb-template" type="text/template">
+    <li>
+        {{ if (!first) { }}
+        <i class="icon-chevron-right link"></i>
+        {{ } }}
+        {{ if (!last && breadcrumb.link) { }}
+        <a href="{{= breadcrumb.link }}">
+        {{ } }}
+        {{ if (breadcrumb.icon) { }}
+        <i class="{{= breadcrumb.icon }} small"></i>
+        {{ } }}
+        {{ if (breadcrumb.label) { }}
+        {{= breadcrumb.label }}
+        {{ } }}
+        {{ if (!last && breadcrumb.link) { }}
+        </a>
+        {{ } }}
+    </li>
+</script>
+
+<script type="text/javascript">
+    jq(function() {
+        emr.updateBreadcrumbs();
+    });
+
+    // global error handler
+    jq(document).ajaxError(function(event, jqxhr) {
+        emr.redirectOnAuthenticationFailure(jqxhr);
+    });
+
+    var featureToggles = {};
+
+    
+
+</script>
+
+    
+ </body></html>
