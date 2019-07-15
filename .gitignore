@@ -1,0 +1,7 @@
+# node.js
+#
+target
+node_modules/
+build/
+output/
+target/
