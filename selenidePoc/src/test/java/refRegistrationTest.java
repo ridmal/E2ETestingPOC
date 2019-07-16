@@ -7,7 +7,7 @@ import static com.codeborne.selenide.Selenide.*;
 
 public class refRegistrationTest {
 	@Test
-	public void userRegistration() {
+	public void userRegistration(){
 		Configuration.holdBrowserOpen = true;
 
 		// Login
@@ -51,6 +51,8 @@ public class refRegistrationTest {
 		$(By.xpath("/html/body/div[@id='body-wrapper']/div[@id='content']/div[@id='content']/form[@id='registration']/div[@id='confirmation']/div[@id='dataCanvas']/div/p[4]")).equals("Address: test address");
 		$(By.xpath("/html/body/div[@id='body-wrapper']/div[@id='content']/div[@id='content']/form[@id='registration']/div[@id='confirmation']/div[@id='dataCanvas']/div/p[5]")).equals("Phone Number: 0123456789");
 		$(By.xpath("/html/body/div[@id='body-wrapper']/div[@id='content']/div[@id='content']/form[@id='registration']/div[@id='confirmation']/div[@id='dataCanvas']/div/p[6]")).equals("Relatives: --");
+
+		$(By.id("submit")).click();
 
 	}
 
