@@ -11,7 +11,7 @@ public class refRegistrationTest {
 		Configuration.holdBrowserOpen = true;
 
 		// Login
-		open("http://localhost:8090/openmrs");
+		open("https://demo.openmrs.org/openmrs/login.htm");
 		$(By.name("username")).setValue("admin");
 		$(By.name("password")).setValue("Admin123");
 		$(By.id("Outpatient Clinic")).click();
@@ -20,15 +20,15 @@ public class refRegistrationTest {
 		//Name
 		$(By.id("referenceapplication-registrationapp-registerPatient-homepageLink-referenceapplication-registrationapp-registerPatient-homepageLink-extension")).click();
 		$(By.xpath("/html/body/div[@id='body-wrapper']/div[@id='content']/div[@id='content']/h2")).equals("Register a patient");
-		$(By.name("givenName")).setValue("testGivenName");
-		$(By.name("middleName")).setValue("testMiddleName");
-		$(By.name("familyName")).setValue("testFamilyName");
+		$(By.name("givenName")).setValue("testGivenName1");
+		$(By.name("middleName")).setValue("testMiddleName1");
+		$(By.name("familyName")).setValue("testFamilyName1");
 
 		// Gender
 		$(By.id("genderLabel")).click();
 		$(By.id("gender-field")).selectOptionByValue("M");
 
-		// Birthday label
+		// Birthday
 		$(By.id("birthdateLabel")).click();
 		$(By.name("birthdateDay")).setValue("19");
 		$(By.name("birthdateMonth")).selectOptionByValue("12");
@@ -45,10 +45,11 @@ public class refRegistrationTest {
 
 		$(By.id("confirmation_label")).click();
 
-		$(By.xpath("/html/body/div[@id='body-wrapper']/div[@id='content']/div[@id='content']/form[@id='registration']/div[@id='confirmation']/div[@id='dataCanvas']/div/p[1]")).equals("Name: testGivenName, testMiddleName, testFamilyName");
+		// validate inputs
+		$(By.xpath("/html/body/div[@id='body-wrapper']/div[@id='content']/div[@id='content']/form[@id='registration']/div[@id='confirmation']/div[@id='dataCanvas']/div/p[1]")).equals("Name: testGivenName1, testMiddleName1, testFamilyName1");
 		$(By.xpath("/html/body/div[@id='body-wrapper']/div[@id='content']/div[@id='content']/form[@id='registration']/div[@id='confirmation']/div[@id='dataCanvas']/div/p[2]")).equals("Gender: Male");
-		$(By.xpath("/html/body/div[@id='body-wrapper']/div[@id='content']/div[@id='content']/form[@id='registration']/div[@id='confirmation']/div[@id='dataCanvas']/div/p[3]")).equals("Birthdate: 12, December, 1990");
-		$(By.xpath("/html/body/div[@id='body-wrapper']/div[@id='content']/div[@id='content']/form[@id='registration']/div[@id='confirmation']/div[@id='dataCanvas']/div/p[4]")).equals("Address: test address");
+		$(By.xpath("/html/body/div[@id='body-wrapper']/div[@id='content']/div[@id='content']/form[@id='registration']/div[@id='confirmation']/div[@id='dataCanvas']/div/p[3]")).equals("Birthdate: 19, December, 1990");
+		$(By.xpath("/html/body/div[@id='body-wrapper']/div[@id='content']/div[@id='content']/form[@id='registration']/div[@id='confirmation']/div[@id='dataCanvas']/div/p[4]")).equals("Address: test address1, test address2");
 		$(By.xpath("/html/body/div[@id='body-wrapper']/div[@id='content']/div[@id='content']/form[@id='registration']/div[@id='confirmation']/div[@id='dataCanvas']/div/p[5]")).equals("Phone Number: 0123456789");
 		$(By.xpath("/html/body/div[@id='body-wrapper']/div[@id='content']/div[@id='content']/form[@id='registration']/div[@id='confirmation']/div[@id='dataCanvas']/div/p[6]")).equals("Relatives: --");
 

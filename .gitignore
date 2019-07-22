@@ -8,3 +8,5 @@ target/
 
 .idea
 .jar
+
+package-lock.json
